@@ -1,62 +1,38 @@
-Performance of sequential execution based vs OpenMP based vector element sum.
+Performance of vector element sum using [float] vs [bfloat16] as the storage type.
 
 This experiment was for comparing the performance between:
-1. Find `Σx` using a single thread (**sequential**).
-2. Find `Σx` accelerated using **OpenMP**.
+1. Find sum of numbers, stored as **float**.
+2. Find sum of numbers, stored as **bfloat16**.
 
-Here `x` is a floating-point vector. Both approaches were attempted on a
-number of vector sizes, running each approach 5 times per size to get a
-good time measure. While it might seem that **OpenMP** method would be a clear
-winner, the results indicate it is dependent upon the workload. If the vector
-size is small, using a small number of threads has a lower overhead. When the
-vector size is large, using a larger number of thread helps. This is possibly
-because with a large vector, the overhead associated with managing threads is
-smaller than the work to be done.
-
-```bash
-$ g++ -O3 -fopenmp main.cxx
-$ OMP_NUM_THREADS=4 ./a.out
-
-# [00000.050 ms; 1e+04 elems.] [1.644834] sum
-# [00000.084 ms; 1e+04 elems.] [1.644834] sumOmp
-#
-# [00000.464 ms; 1e+05 elems.] [1.644924] sum
-# [00000.130 ms; 1e+05 elems.] [1.644924] sumOmp
-#
-# [00001.715 ms; 1e+06 elems.] [1.644933] sum
-# [00000.508 ms; 1e+06 elems.] [1.644933] sumOmp
-#
-# [00014.652 ms; 1e+07 elems.] [1.644934] sum
-# [00005.921 ms; 1e+07 elems.] [1.644934] sumOmp
-#
-# [00144.494 ms; 1e+08 elems.] [1.644934] sum
-# [00040.842 ms; 1e+08 elems.] [1.644934] sumOmp
-#
-# [01444.743 ms; 1e+09 elems.] [1.644934] sum
-# [00408.852 ms; 1e+09 elems.] [1.644934] sumOmp
-```
+Both approaches were attempted on a number of vector sizes, running each
+approach 5 times per size to get a good time measure. While it seemed to me
+that **bfloat16** method would be a clear winner because of reduced memory
+bandwidth requirement, for some reason it is only slightly faster. This is
+possibly because memory loads are anyway always 32-bit. The only reason using
+bfloat16 is slightly faster could possibly be because it allows data to be
+retained in cache for a longer period of time (because of its small size).
 
 ```bash
-$ g++ -O3 -fopenmp main.cxx
-$ OMP_NUM_THREADS=48 ./a.out
+$ g++ -O3 main.cxx
+$ ./a.out
 
-# [00000.039 ms; 1e+04 elems.] [1.644834] sum
-# [00025.367 ms; 1e+04 elems.] [1.644834] sumOmp
+# [00000.050 ms; 1e+04 elems.] [1.644725] sumFloat
+# [00000.050 ms; 1e+04 elems.] [1.643810] sumBfloat16
 #
-# [00000.169 ms; 1e+05 elems.] [1.644924] sum
-# [00023.483 ms; 1e+05 elems.] [1.644924] sumOmp
+# [00000.504 ms; 1e+05 elems.] [1.644725] sumFloat
+# [00000.505 ms; 1e+05 elems.] [1.643810] sumBfloat16
 #
-# [00001.685 ms; 1e+06 elems.] [1.644933] sum
-# [00020.744 ms; 1e+06 elems.] [1.644933] sumOmp
+# [00001.780 ms; 1e+06 elems.] [1.644725] sumFloat
+# [00001.342 ms; 1e+06 elems.] [1.643810] sumBfloat16
 #
-# [00015.561 ms; 1e+07 elems.] [1.644934] sum
-# [00022.450 ms; 1e+07 elems.] [1.644934] sumOmp
+# [00013.539 ms; 1e+07 elems.] [1.644725] sumFloat
+# [00013.432 ms; 1e+07 elems.] [1.643810] sumBfloat16
 #
-# [00145.128 ms; 1e+08 elems.] [1.644934] sum
-# [00026.619 ms; 1e+08 elems.] [1.644934] sumOmp
+# [00135.340 ms; 1e+08 elems.] [1.644725] sumFloat
+# [00134.231 ms; 1e+08 elems.] [1.643810] sumBfloat16
 #
-# [01443.808 ms; 1e+09 elems.] [1.644934] sum
-# [00171.276 ms; 1e+09 elems.] [1.644934] sumOmp
+# [01354.430 ms; 1e+09 elems.] [1.644725] sumFloat
+# [01343.146 ms; 1e+09 elems.] [1.643810] sumBfloat16
 ```
 
 <br>
@@ -65,10 +41,14 @@ $ OMP_NUM_THREADS=48 ./a.out
 
 ## References
 
-- [Parallel for loop in openmp](https://stackoverflow.com/a/11773714/1413259)
-- [What's the difference between “static” and “dynamic” schedule in OpenMP?](https://stackoverflow.com/a/10852852/1413259)
+- [Convert FP32 to Bfloat16 in C++](https://stackoverflow.com/a/64493446/1413259)
+- [Why is there no 2-byte float and does an implementation already exist?](https://stackoverflow.com/a/56017304/1413259)
+- [Is it safe to reinterpret_cast an integer to float?](https://stackoverflow.com/a/13982359/1413259)
 
 <br>
 <br>
 
-[![](https://i.imgur.com/KoxZ0HW.jpg)](https://www.youtube.com/watch?v=0XTLuFpuAtE)
+[![](https://i.imgur.com/KUYb9vo.jpg)](https://www.youtube.com/watch?v=0XTLuFpuAtE)
+
+[float]: https://en.wikipedia.org/wiki/Single-precision_floating-point_format
+[bfloat16]: https://en.wikipedia.org/wiki/Bfloat16_floating-point_format
