@@ -1,5 +1,5 @@
 Dell PowerEdge R740 Rack Mount Chassis
-Proc:  Intel(R) Xeon(R) Silver 4116 CPU @ 2.10GHz (48 cores x 2)
+Proc:  Intel(R) Xeon(R) Silver 4116 CPU @ 2.10GHz (12 cores x 2)
 Cache: L1d+i: 768KB, L2: 12MB, L3: 16MB (shared), NUMA: 2
 Mem:   128GB DIMM DDR4 Synchronous Registered (Buffered) 2666 MHz (8x16GB)
 Disk:  MegaRAID SAS-3 3108 [Invader]; 10TB PERC H730P Adp
