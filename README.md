@@ -15,7 +15,7 @@ retained in cache for a longer period of time (because of its small size).
 Note that neither approach makes use of *SIMD instructions* which are
 available on all modern hardware.
 
-All outputs are saved in [out](out/) and a small part of the output is listed
+All outputs are saved in [gist] and a small part of the output is listed
 here. Some [charts] are also included below, generated from [sheets]. This
 experiment was done with guidance from [Prof. Dip Sankar Banerjee] and
 [Prof. Kishore Kothapalli].
@@ -70,5 +70,6 @@ $ ./a.out
 [Prof. Kishore Kothapalli]: https://cstar.iiit.ac.in/~kkishore/
 [float]: https://en.wikipedia.org/wiki/Single-precision_floating-point_format
 [bfloat16]: https://en.wikipedia.org/wiki/Bfloat16_floating-point_format
+[gist]: https://gist.github.com/wolfram77/dbc84eebfce2300759137c7d6b83f843
 [charts]: https://photos.app.goo.gl/UfEY5BpeoDLfNKsi6
 [sheets]: https://docs.google.com/spreadsheets/d/1HU_vOWPTmCLijEMAXW94IflGKrYrIWlyNDfEzyG49bs/edit?usp=sharing
